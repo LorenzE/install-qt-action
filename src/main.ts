@@ -81,12 +81,16 @@ async function run() {
     // On Windows, jom isn't necessary a dependency to Qt, but most
     // users will want it.
     if (process.platform == "win32" && core.getInput("install-deps") == "true") {
+      console.log('Downloading and extracting Jom.');
+
+      let qtBin = qtPath + "/bin";
+
       const download = require('download')
-      var url = "https://download.qt.io/official_releases/jom/jom.zip"
-      download(url, qtPath + "\bin", {
-        extract: true
-      }).then(() => {
-        console.log('Downloaded and extracted jom!');
+      let url = "https://download.qt.io/official_releases/jom/jom.zip"
+      download(url, qtBin).then(() => {
+        console.log('Downloaded Jom.');
+
+        exec.exec("7z x " + qtBin + "/jom.zip -o" + qtBin);
       });
     }
   } catch (error) {
